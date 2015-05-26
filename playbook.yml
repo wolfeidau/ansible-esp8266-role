@@ -1,0 +1,14 @@
+---
+- name: Test the esp8266 role
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: Add ubuntu user
+      user: name=ubuntu
+    - name: Generate locales
+      shell: locale-gen en_US en_US.UTF-8
+    - name: Update locale
+      shell: /usr/sbin/update-locale LANG=en_US LC_ALL=en_US.UTF-8
+    - include: "tasks/main.yml" 
+      vars:
+        deploy_user: ubuntu 

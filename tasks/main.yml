@@ -1,0 +1,110 @@
+---
+- name: make base directory
+  file:
+    path:  /opt/Espressif/downloads
+    recurse: yes
+    state: directory
+    mode: 0755
+    owner: "{{ deploy_user }}"
+
+- name: install build dependencies
+  apt: pkg={{ item }} update_cache=true
+  with_items:
+    - git 
+    - autoconf
+    - build-essential 
+    - gperf 
+    - bison 
+    - flex 
+    - texinfo 
+    - libtool 
+    - libncurses5-dev 
+    - wget 
+    - gawk 
+    - libc6-dev 
+    - python-serial 
+    - libexpat-dev 
+    - unzip
+
+- name: clone crosstool-NG
+  git: 
+    repo: git://github.com/jcmvbkbc/crosstool-NG.git 
+    dest: /opt/Espressif/crosstool-NG
+    depth: 1
+    version: lx106
+    accept_hostkey: True
+  sudo_user: "{{ deploy_user }}"
+
+- name: bootstrap crosstool-NG
+  shell: /opt/Espressif/crosstool-NG/bootstrap chdir=/opt/Espressif/crosstool-NG
+  sudo_user: "{{ deploy_user }}"
+
+- name: configure crosstool-NG
+  shell: ./configure --prefix=`pwd` chdir=/opt/Espressif/crosstool-NG
+  sudo_user: "{{ deploy_user }}" 
+
+- name: make crosstool-NG
+  shell: make chdir=/opt/Espressif/crosstool-NG
+  sudo_user: "{{ deploy_user }}"
+
+- name: make install crosstool-NG
+  shell: make install chdir=/opt/Espressif/crosstool-NG
+  sudo_user: "{{ deploy_user }}"
+
+- name: run ct-ng xtensa-lx106-elf
+  shell: /opt/Espressif/crosstool-NG/ct-ng xtensa-lx106-elf chdir=/opt/Espressif/crosstool-NG
+  sudo_user: "{{ deploy_user }}"
+
+- name: run ct-ng xtensa-lx106-elf build
+  shell: /opt/Espressif/crosstool-NG/ct-ng build chdir=/opt/Espressif/crosstool-NG creates=/opt/Espressif/crosstool-NG/builds/xtensa-lx106-elf
+  sudo_user: "{{ deploy_user }}"
+
+- name: ct-ng cleanup
+  shell: rm -rf /opt/Espressif/crosstool-NG/.build removes=/opt/Espressif/crosstool-NG/.build
+  sudo_user: "{{ deploy_user }}"
+
+- name: update profile.d 
+  copy: src=esp8266.sh dest=/etc/profile.d/esp8266.sh mode=644
+
+- name: gets includes tarball
+  get_url: url="{{ esp_iot_sdk_archive_url }}" dest="/opt/Espressif/downloads/{{ esp_iot_sdk }}.zip"
+  sudo_user: "{{ deploy_user }}"
+  register: new_sdk_archive
+
+- name: unarchive source
+  unarchive: src="/opt/Espressif/downloads/{{ esp_iot_sdk }}.zip" dest="/opt/Espressif" copy=no
+  sudo_user: "{{ deploy_user }}"
+  when: new_sdk_archive|changed
+
+- name: link SDK
+  file: src=/opt/Espressif/{{ esp_iot_sdk_path }} dest="/opt/Espressif/ESP8266_SDK" state=link
+
+- name: gets libc.a
+  get_url: url="https://github.com/esp8266/esp8266-wiki/raw/master/libs/libc.a" dest="/opt/Espressif/ESP8266_SDK/lib/libc.a"
+  sudo_user: "{{ deploy_user }}"
+
+- name: gets libhal.a
+  get_url: url="https://github.com/esp8266/esp8266-wiki/raw/master/libs/libhal.a" dest="/opt/Espressif/ESP8266_SDK/lib/libhal.a"
+  sudo_user: "{{ deploy_user }}"
+
+- name: Gets includes tarball
+  get_url: url="https://github.com/esp8266/esp8266-wiki/raw/master/include.tgz" dest="/opt/Espressif/downloads/"
+  sudo_user: "{{ deploy_user }}"
+  register: new_archive
+
+- name: Unarchive includes source
+  unarchive: src="/opt/Espressif/downloads/include.tgz" dest="/opt/Espressif/ESP8266_SDK" copy=no
+  sudo_user: "{{ deploy_user }}"
+  when: new_archive|changed
+
+- name: clone esptool.py
+  git: 
+    repo: https://github.com/themadinventor/esptool
+    dest: /opt/Espressif/esptool-py
+    accept_hostkey: True
+  sudo_user: "{{ deploy_user }}"
+
+- name: link the esptool.py into bin directory
+  file: src=/opt/Espressif/esptool-py/esptool.py dest="/opt/Espressif/crosstool-NG/builds/xtensa-lx106-elf/bin/esptool.py" state=link
+  sudo_user: "{{ deploy_user }}"
+

@@ -1,0 +1,7 @@
+---
+galaxy_info:
+  author: Mark Wolfe
+  description: esp8266 development role for OSX and Linux
+ license: MIT
+  min_ansible_version: 1.2
+dependencies: []
