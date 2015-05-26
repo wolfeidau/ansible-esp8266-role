@@ -66,13 +66,13 @@
 - name: update profile.d 
   copy: src=esp8266.sh dest=/etc/profile.d/esp8266.sh mode=644
 
-- name: gets includes tarball
+- name: gets sdk archive
   get_url: url="{{ esp_iot_sdk_archive_url }}" dest="/opt/Espressif/downloads/{{ esp_iot_sdk }}.zip"
   sudo_user: "{{ deploy_user }}"
   register: new_sdk_archive
 
 - name: unarchive source
-  unarchive: src="/opt/Espressif/downloads/{{ esp_iot_sdk }}.zip" dest="/opt/Espressif" copy=no
+  shell: unzip "/opt/Espressif/downloads/{{ esp_iot_sdk }}.zip" -d "/opt/Espressif"
   sudo_user: "{{ deploy_user }}"
   when: new_sdk_archive|changed
 
@@ -106,5 +106,4 @@
 
 - name: link the esptool.py into bin directory
   file: src=/opt/Espressif/esptool-py/esptool.py dest="/opt/Espressif/crosstool-NG/builds/xtensa-lx106-elf/bin/esptool.py" state=link
-  sudo_user: "{{ deploy_user }}"
 
