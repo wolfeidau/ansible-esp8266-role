@@ -34,6 +34,8 @@
     version: lx106
     accept_hostkey: True
   sudo_user: "{{ deploy_user }}"
+  environment:
+    HOME: "/home/{{ deploy_user }}"
 
 - name: bootstrap crosstool-NG
   shell: /opt/Espressif/crosstool-NG/bootstrap chdir=/opt/Espressif/crosstool-NG
