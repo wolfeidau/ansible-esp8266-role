@@ -113,11 +113,15 @@
   sudo_user: "{{ deploy_user }}"
   when: new_sdk_archive|changed
 
-- name: clone esptool.py
+- name: clone esptool
   git: 
     repo: https://github.com/igrr/esptool-ck
     dest: /opt/Espressif/esptool-ck
     accept_hostkey: True
+  sudo_user: "{{ deploy_user }}"
+
+- name: make esptool
+  shell: make chdir=/opt/Espressif/esptool-ck
   sudo_user: "{{ deploy_user }}"
 
 - name: link the esptool into bin directory
