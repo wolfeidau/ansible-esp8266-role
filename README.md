@@ -16,9 +16,8 @@ This is also used to produce a docker container with this environment packed ins
 
 To release a new version run the following commands:
 
-    ID=$(docker build -t wolfeidau/esp8266-dev .)
-    docker tag $ID wolfeidau/esp8266-dev:1.1.0
-    docker tag $ID wolfeidau/esp8266-dev:latest
+    docker build -t wolfeidau/esp8266-dev:1.1.0
+    docker tag -f wolfeidau/esp8266-dev:1.1.0 wolfeidau/esp8266-dev:latest
     docker push wolfeidau/esp8266-dev:1.1.0
     docker push wolfeidau/esp8266-dev:latest
 
