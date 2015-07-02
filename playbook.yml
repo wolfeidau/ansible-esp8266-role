@@ -12,6 +12,6 @@
     - include: "tasks/main.yml" 
       vars:
         deploy_user: ubuntu 
-        esp_iot_sdk_archive_url: "http://bbs.espressif.com/download/file.php?id=293&sid=876620ca9304c9fd164d8fa113bfd94b"
-        esp_iot_sdk: "esp_iot_sdk_v1.0.1_b2_15_04_10"
-        esp_iot_sdk_path: "esp_iot_sdk_v1.0.1_b2"
+        esp_iot_sdk_archive_url: "http://bbs.espressif.com/download/file.php?id=425&sid=de2ce6796e10bc084fc95f01d3814d51"
+        esp_iot_sdk: "esp_iot_sdk_v1.1.0_15_05_26"
+        esp_iot_sdk_path: "esp_iot_sdk_v1.1.0"
