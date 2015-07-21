@@ -1,5 +1,5 @@
 ---
 deploy_user: "markw"
-esp_iot_sdk_archive_url: "http://bbs.espressif.com/download/file.php?id=425&sid=de2ce6796e10bc084fc95f01d3814d51"
-esp_iot_sdk: "esp_iot_sdk_v1.1.0_15_05_26"
-esp_iot_sdk_path: "esp_iot_sdk_v1.1.0"
+esp_iot_sdk_archive_url: "http://bbs.espressif.com/download/file.php?id=564&sid=b012c7cc3f156b4a934c60f8275afc7a"
+esp_iot_sdk: "esp_iot_sdk_v1.2.0_15_07_03.zip"
+esp_iot_sdk_path: "esp_iot_sdk_v1.2.0"
