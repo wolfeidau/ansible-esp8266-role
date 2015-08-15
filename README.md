@@ -10,6 +10,10 @@ Including an example of how to use your role (for instance, with variables passe
       roles:
          - { role: wolfeidau.esp8266, deploy_user: "markw" }
 
+# Using Ansible
+
+TODO
+
 # Docker
 
 This is also used to produce a docker container with this environment packed inside to make it easy for others to get building with esp8266!
