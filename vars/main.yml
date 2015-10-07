@@ -1,5 +1,5 @@
 ---
 deploy_user: "ubuntu"
-esp_iot_sdk_archive_url: "http://bbs.espressif.com/download/file.php?id=664"
-esp_iot_sdk: "esp_iot_sdk_v1.3.0_15_08_08"
-esp_iot_sdk_path: "esp_iot_sdk_v1.3.0"
+esp_iot_sdk_archive_url: "http://bbs.espressif.com/download/file.php?id=838"
+esp_iot_sdk: "esp_iot_sdk_v1.4.0_15_09_18"
+esp_iot_sdk_path: "esp_iot_sdk_v1.4.0"
